@@ -12,7 +12,7 @@
 
 using namespace std;
 
-const int MAXIMUM = 50;
+const int MAXIMUM = 1;
 
 typedef string BookTitle[MAXIMUM];
 typedef string ISBN_Number[MAXIMUM];
@@ -38,7 +38,7 @@ int main()
     Author author;
     Publisher publisher;
     InventoryAddDate inventoryDate;
-    BookQuantity bookQuanity;
+    BookQuantity bookQuantity;
     WholesaleCost wholesale;
     RetailCost retail;
     
@@ -51,7 +51,7 @@ int main()
     do
     {
         // reset menu to prevent infinite loop
-        int menu = -1;
+        menu = -1;
         
         while (menu < 1 || menu > 2)
         {
@@ -69,7 +69,7 @@ int main()
             
             if (menu != 1 && menu != 2)
             {
-                cout << "Please enter a 1 to select a book funtion ot a 2 to exit." << endl;
+                cout << "Please enter a 1 to select a book funtion or a 2 to exit." << endl;
             }
         }
         
@@ -81,7 +81,7 @@ int main()
     
         // Inventory Menu
         
-        // create variable to book function
+        // create variable to call appropriate book function
         int choice;
         
         do
@@ -101,18 +101,19 @@ int main()
             
             switch (choice)
             {
-                case 1: lookUpBook(bookTitle, isbn, author, publisher, inventoryDate, bookQuanity, wholesale, retail, items);
+                case 1: lookUpBook(bookTitle, isbn, author, publisher, inventoryDate, bookQuantity, wholesale, retail, items);
                     break;
-                case 2: addBook(bookTitle, isbn, author, publisher, inventoryDate, bookQuanity, wholesale, retail, items);
+                case 2: addBook(bookTitle, isbn, author, publisher, inventoryDate, bookQuantity, wholesale, retail, items);
                     items++;
                     break;
-                case 3: editBook(bookTitle, isbn, author, publisher, inventoryDate, bookQuanity, wholesale, retail, items);
+                case 3: editBook(bookTitle, isbn, author, publisher, inventoryDate, bookQuantity, wholesale, retail, items);
                     break;
-                case 4: deleteBook(bookTitle, isbn, author, publisher, inventoryDate, bookQuanity, wholesale, retail, items);
+                case 4: deleteBook(bookTitle, isbn, author, publisher, inventoryDate, bookQuantity, wholesale, retail, items);
                     items--;
                     break;
                 case 5: break;
                 default: cout << "Please enter a number between 1 and 5.";
+                    break;
             }
             
         } while (choice != 5);
@@ -121,20 +122,18 @@ int main()
         
     } while (menu == 1);
     
-    cout << "\n Thank You For Using Serendipity Bookstore!" << endl;
-    
     return 0;
 }
 
 
 /*****  ADD BOOK FUNCTION *****/
 void addBook(BookTitle bookTitle, ISBN_Number isbn, Author author, Publisher publisher, InventoryAddDate inventoryDate,
-        BookQuantity bookQuanity, WholesaleCost wholesale, RetailCost retail, int i) 
+        BookQuantity bookQuantity, WholesaleCost wholesale, RetailCost retail, int i) 
 {
 
     if (i == MAXIMUM)
     {
-        cout << "No more books may be added to the inventory." << "\n\n";
+        cout << "No more books may be added to the inventory.\n" << endl;
     } 
     else
     {
@@ -155,16 +154,16 @@ void addBook(BookTitle bookTitle, ISBN_Number isbn, Author author, Publisher pub
         cout << "Enter Date Added to Inventory(MM/DD/YYYY): ";
         getline(cin, inventoryDate[i]);
         
-        cout << "Enter Quanitity Being Added: ";
-        getline(cin, bookQuanity[i]);
+        cout << "Enter Quantity Being Added: ";
+        getline(cin, bookQuantity[i]);
         
-        cout << "Enter WholeSale Cost: ";
+        cout << "Enter Wholesale Cost: ";
         getline(cin, wholesale[i]);
         
         cout << "Enter Retail Price: ";
         getline(cin, retail[i]);
 
-        cout << "\n Record Was Successfully Entered.\n" << endl;
+        cout << "\n Record was successfully entered.\n" << endl;
     }
 }
 
@@ -172,7 +171,7 @@ void addBook(BookTitle bookTitle, ISBN_Number isbn, Author author, Publisher pub
 
 /*****  LOOKUP BOOK FUNCTION *****/
 void lookUpBook(BookTitle bookTitle, ISBN_Number isbn, Author author, Publisher publisher, InventoryAddDate inventoryDate,
-        BookQuantity bookQuanity, WholesaleCost wholesale, RetailCost retail, int i)
+        BookQuantity bookQuantity, WholesaleCost wholesale, RetailCost retail, int i)
 {
 
     string lookUp = "";
@@ -184,7 +183,7 @@ void lookUpBook(BookTitle bookTitle, ISBN_Number isbn, Author author, Publisher 
     getline(cin,lookUp);
 
     /// Search for title index
-    int titleIndex = bookSearch(bookTitle, isbn, author, publisher, inventoryDate, bookQuanity, wholesale, retail, i, lookUp);
+    int titleIndex = bookSearch(bookTitle, isbn, author, publisher, inventoryDate, bookQuantity, wholesale, retail, i, lookUp);
 
     cout << endl;
 }
@@ -193,7 +192,7 @@ void lookUpBook(BookTitle bookTitle, ISBN_Number isbn, Author author, Publisher 
 
 /*****  EDIT BOOK FUNCTION *****/
 void editBook(BookTitle bookTitle, ISBN_Number isbn, Author author, Publisher publisher, InventoryAddDate inventoryDate,
-        BookQuantity bookQuanity, WholesaleCost wholesale, RetailCost retail, int i)
+        BookQuantity bookQuantity, WholesaleCost wholesale, RetailCost retail, int i)
 {
 
     string lookUp = "";
@@ -205,7 +204,7 @@ void editBook(BookTitle bookTitle, ISBN_Number isbn, Author author, Publisher pu
     getline(cin,lookUp);
 
     /// Search for title index
-    int titleIndex = bookSearch(bookTitle, isbn, author, publisher, inventoryDate, bookQuanity, wholesale, retail, i, lookUp);
+    int titleIndex = bookSearch(bookTitle, isbn, author, publisher, inventoryDate, bookQuantity, wholesale, retail, i, lookUp);
 
     if (titleIndex >= 0) 
     {
@@ -270,10 +269,10 @@ void editBook(BookTitle bookTitle, ISBN_Number isbn, Author author, Publisher pu
                     inventoryDate[titleIndex] = newTitle;
                         break;
                 case 6:
-                    cout << "Current Quantity:\t" << bookQuanity[titleIndex]  << endl;
+                    cout << "Current Quantity:\t" << bookQuantity[titleIndex]  << endl;
                     cout << "Enter New Quantity:\t";
                     getline(cin, newTitle);
-                    bookQuanity[titleIndex] = newTitle;
+                    bookQuantity[titleIndex] = newTitle;
                         break;
                 case 7:
                     cout << "Current WholeSale Price:\t" << wholesale[titleIndex]  << endl;
@@ -323,25 +322,25 @@ void deleteBook(BookTitle bookTitle, ISBN_Number isbn, Author author, Publisher 
             cout << "Are you sure you want to delete this book? (Y/N): ";
             cin >> confirm;
 
-            if (confirm != "Y" || confirm != "y" || confirm != "N" || confirm != "n") 
+            if (confirm != "Y" && confirm != "y" && confirm != "N" && confirm != "n") 
             {
                 cout << "\tPlease enter a \'Y\' for yes, or \'N\' for no." << endl;
             }
-        } while (confirm != "Y" || confirm != "y" || confirm != "N" || confirm != "n");
+        } while (confirm != "Y" && confirm != "y" && confirm != "N" && confirm != "n");
         
-        if (confirm == "Y" & confirm == "y") {
+        if (confirm == "Y" && confirm == "y") {
             for (int index = titleIndex; index < i - 1; index++) {
-                bookTitle[index]        = bookTitle[index + 1];
-                isbn[index]         = isbn[index + 1];
-                author[index]       = author[index + 1];
-                publisher[index]    = publisher[index + 1];
-                inventoryDate[index]    = inventoryDate[index + 1];
-                bookQuantity[index]     = bookQuantity[index + 1];
-                wholesale[index]    = wholesale[index + 1];
-                retail[index]       = retail[index + 1];
+                bookTitle[index] = bookTitle[index + 1];
+                isbn[index] = isbn[index + 1];
+                author[index] = author[index + 1];
+                publisher[index] = publisher[index + 1];
+                inventoryDate[index] = inventoryDate[index + 1];
+                bookQuantity[index] = bookQuantity[index + 1];
+                wholesale[index] = wholesale[index + 1];
+                retail[index] = retail[index + 1];
             }
 
-            cout << "The Book has been Deleted." << endl;
+            cout << "The book has been deleted." << endl;
         }
     }
     cout << endl;
@@ -366,21 +365,21 @@ int bookSearch(BookTitle bookTitle, ISBN_Number isbn, Author author, Publisher p
     
     if (titleIndex == -1)
     { 
-        cout << "The book you searched for is not in inventory." << endl;
+        cout << "The book you searched for is not in the inventory." << endl;
         
     }
     else
     {
-        cout << "\t\tSerpendipity BookSellers" << endl;
-        cout << "\t\t\tBook Information" << endl;
+        cout << "\t\tSerpendipity Booksellers" << endl;
+        cout << "\t\tBook Information" << endl;
         cout << "ISBN: " << isbn[titleIndex] << endl;
         cout << "Title: " << bookTitle[titleIndex] << endl;
         cout << "Author: " << author[titleIndex] << endl;
         cout << "Publisher: " << publisher[titleIndex] << endl;
         cout << "Date Added: " << inventoryDate[titleIndex] << endl;
-        cout << "Quantity-On-Hand: " << bookQuantity[titleIndex] << endl;
-        cout << "WholeSale: " << wholesale[titleIndex] << endl;
-        cout << "Retail " << retail[titleIndex] << endl;
+        cout << "Quantity: " << bookQuantity[titleIndex] << endl;
+        cout << "Wholesale Cost: " << wholesale[titleIndex] << endl;
+        cout << "Retail Price: " << retail[titleIndex] << endl;
     }
 
     return titleIndex;
